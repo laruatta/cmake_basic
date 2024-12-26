@@ -8,10 +8,6 @@ if(EXISTS "${LOC_PATH}")
     message(FATAL_ERROR "You cannot build in a source directory (or any directory with a CMakeLists.txt file). Please make a build subdirectory. Feel free to remove CMakeCache.txt and CMakeFiles.")
 endif()
 
-# set(PRINTLIB Library)
-# set(EXECUTABLE_NAME Executable)
-
 add_subdirectory(src)
-
-# add_subdirectory(inc)
-# add_subdirectory(lib)
+add_subdirectory(inc)
+add_subdirectory(lib)
