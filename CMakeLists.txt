@@ -1,23 +1,18 @@
 cmake_minimum_required (VERSION 3.20)
 
-project (cmake_basic LANGUAGES C CXX)
+project (cmake_basic VERSION 1.0.0 LANGUAGES C CXX)
 
-set(CMAKE_C_STANDARD 99)
-set(CMAKE_CXX_STANDARD 17)
+include(cmake/CPM.cmake)
+set(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+CPMAddPackage(
+    NAME printlib
+    GITHUB_REPOSITORY FriedrichAC/printlib
+    GIT_TAG dev
+    SOURCE_DIR ${LIB_DIR}/printlib
+)
 
-### Require out-of-source builds
-file(TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH)
-if(EXISTS "${LOC_PATH}")
-    message(FATAL_ERROR "You cannot build in a source directory (or any directory with a CMakeLists.txt file). Please make a build subdirectory. Feel free to remove CMakeCache.txt and CMakeFiles.")
-endif()
-
-option(COMPILE_EXECUTABLE "Whether to compile the executable" OFF)
-
-if (COMPILE_EXECUTABLE)
-    add_subdirectory(src)
-    target_include_directories(cmake_basic PUBLIC "inc")
-else()
-    message("!!No executable compiling!!")
-endif()
-add_subdirectory(inc)
+add_subdirectory(src)
 add_subdirectory(lib)
+#target_include_directories(${PROJECT_NAME} PUBLIC version)
+target_include_directories(${PROJECT_NAME} PUBLIC ${LIB_DIR}/printlib/inc)
+target_link_directories(${PROJECT_NAME} PUBLIC ${printlib_SRC_DIR})
